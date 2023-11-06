@@ -1,0 +1,92 @@
+import centroDeKinesiologia.*
+
+describe "Parte1" {
+
+	var Leonardo = new Paciente(edad = 40, nivelDeDolor = 10, fortalezaMuscular = 20)
+	var Milena = new Paciente(edad = 3, nivelDeDolor = 30, fortalezaMuscular = 50)
+	var bicicleta = new Bicicleta()
+	var magneto = new Magneto()
+	var minitramp = new Minitramp()
+
+	// PARTE 1
+	// Leonardo puede usar los tres aparatos creados
+	test "Leonardo puede usar los aparatos" {
+		assert.that(bicicleta.puedeUsarse(Leonardo))
+		assert.that(magneto.puedeUsarse(Leonardo))
+		assert.that(minitramp.puedeUsarse(Leonardo))
+	}
+
+// mientras que Milena puede usar sólo el magneto.
+	test "Milena solo puede usar el Magneto" {
+		assert.notThat(bicicleta.puedeUsarse(Milena))
+		assert.that(magneto.puedeUsarse(Milena))
+		assert.notThat(minitramp.puedeUsarse(Milena))
+	}
+
+	test "Leonardo usando Magneto" {
+		// Después de usar el magneto una vez, el nivel de dolor de Leonardo baja a 9.
+		assert.that(magneto.puedeUsarse(Leonardo))
+		magneto.serUsado(Leonardo)
+		assert.equals(9, Leonardo.getNivelDeDolor())
+	}
+
+	test "Milena usando Magneto" {
+		// Después de usar el magneto una vez, el nivel de dolor de Milena baja a 27.
+		assert.that(magneto.puedeUsarse(Milena))
+		magneto.serUsado(Milena)
+		assert.equals(27, Milena.getNivelDeDolor())
+	}
+
+	test "Leonardo usando bicicleta" {
+		// Después de usar la bicicleta una vez, el nivel de dolor de Leonardo baja a 6, 
+		// y la fortaleza sube a 23.
+		bicicleta.serUsado(Leonardo)
+		assert.equals(6, Leonardo.getNivelDeDolor())
+		assert.equals(23, Leonardo.getfortalezaMuscular())
+	}
+
+	test "Leonardo usando Minitramp" {
+		// Después de usar el minitramp una vez, la fortaleza de Leonardo sube a 24.
+		minitramp.serUsado(Leonardo)
+		assert.equals(22, Leonardo.getfortalezaMuscular())
+	// CONSULTAR CONSIGNA: Minitramp: El nivel de fortaleza muscular aumenta un 10% de la edad del paciente. 
+	// Solo puede ser usado por personas cuyo nivel de dolor es inferior a 20.
+	}
+
+}
+
+// PARTE 2
+describe "Parte2" {
+
+	var leonardo = new Paciente(edad = 40, nivelDeDolor = 10, fortalezaMuscular = 20)
+	var milena = new Paciente(edad = 3, nivelDeDolor = 30, fortalezaMuscular = 50)
+	var bicicleta = new Bicicleta()
+	var magneto = new Magneto()
+	var minitramp = new Minitramp()
+
+	method inicialitize() {
+		leonardo.agregarARutina(bicicleta)
+		leonardo.agregarARutina(minitramp)
+		leonardo.agregarARutina(bicicleta)
+		leonardo.agregarARutina(magneto)
+		leonardo.realizarSesionCompleta()
+	}
+
+	test "Leonardo puede realizar su rutina" {
+		// una bicicleta, un minitramp, la misma bicicleta de nuevo, un magneto.
+		// Leonardo puede hacer la rutina que tiene asignada. 
+		assert.that(leonardo.puedeRealizarRutina())
+	}
+
+	test "Leonardo baja su nivel de dolor baja a 1.8" {
+// Después de hacerla una vez, su nivel de dolor baja a 1.8, y su fortaleza sube a 30.
+		assert.equals(1.8, leonardo.getNivelDeDolor())
+	}
+
+	test "Leonardo aumenta su fortaleza a 30" {
+// Después de hacerla una vez, su nivel de dolor baja a 1.8, y su fortaleza sube a 30.
+		assert.equals(30, leonardo.getfortalezaMuscular())
+	}
+
+}
+
